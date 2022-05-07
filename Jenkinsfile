@@ -1,12 +1,23 @@
 pipeline {
-   agent {
-       label 'c1-node1'
-   }
-   stages {
-      stage('stage-1') {
-         steps {
-            echo "This is build number $BUILD_NUMBER"           
-         }
-      }
-   }
+    agent any
+
+    stages {
+        stage ('Compile') {
+
+            steps {
+                withMaven(maven : 'maven_3_5_2') {
+                    sh 'mvn clean compile'
+                }
+            }
+        }
+
+        stage ('Test') {
+
+            steps {
+                withMaven(maven : 'maven_3_5_2') {
+                    sh 'mvn test'
+                }
+            }
+        }
+    }
 }
